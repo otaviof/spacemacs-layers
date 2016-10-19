@@ -117,6 +117,8 @@
   (setq fci-rule-color "DarkSlateGray")
   )
 
+(defun of-theme-custom/init-material-theme ())
+
 (defun of-theme-custom/init-ample-theme ())
 
 (defun of-theme-custom/init-hc-zenburn-theme ())

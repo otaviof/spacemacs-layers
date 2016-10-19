@@ -3,7 +3,8 @@
 ;;  File: packages.el
 ;;
 
-(defconst of-org-packages '(org org-journal toc-org))
+(defconst of-org-packages '(org
+                            org-journal))
 
 (defun of-org/post-init-org ()
   (setq-default
@@ -65,15 +66,6 @@
                                '((perl . t)
                                  (ruby . t)
                                  (sh . t)))
-  )
-
-(defun of-org/init-toc-org ()
-  (use-package toc-org
-    :config
-    (if (require 'toc-org nil t)
-        (add-hook 'org-mode-hook 'toc-org-enable)
-      (warn "toc-org package not found!"))
-    )
   )
 
 (defun of-org/init-org-journal ()
