@@ -7,6 +7,9 @@
                             org-journal))
 
 (defun of-org/post-init-org ()
+  ;; using to find agenda files under org directory
+  (load-library "find-lisp")
+
   (setq-default
    ;;; org-mode settings
    org-agenda-restore-windows-after-quit t
@@ -24,9 +27,9 @@
    ;;; org files location and directories
    org-directory "~/org"
    org-default-notes-file "~/org/_notes.org"
-   org-agenda-files '("~/org/_notes.org"
-                      "~/org/_TODOs.org"
-                      "~/org/_projects.org")
+   org-agenda-files (mapcar 'abbreviate-file-name
+                            (split-string
+                             (shell-command-to-string "find ~/org -name \"_*.org\"") "\n"))
    org-agenda-text-search-extra-files '(agenda-archives
                                         "~/org/_archives/agenda.org")
    ;;; org-capture, where to store each type of snippet
