@@ -1,0 +1,28 @@
+#+STARTUP: showall
+
+* Spacemacs Private Layers
+ Splitting primary configuration of Spacemacs into private layers.
+
+** Usage
+*** Including Private Layers
+Clone this repository and configure Spacemacs to look for layers on it:
+
+#+BEGIN_SRC elisp
+;; If non-nil layers with lazy install support are lazy installed.
+;; List of additional paths where to look for configuration layers.
+;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
+dotspacemacs-configuration-layer-path '("~/.spacemacs-layers")
+#+END_SRC
+
+*** Enabling Layers
+Using =SPC h SPC= shall find the private layers available, and when including them
+on ~dotspacemacs-configuration-layers~ will be loaded during Spacemacs startup or
+configuration reload (=SPC f e R=). For instance:
+
+#+BEGIN_SRC elisp
+(defun dotspacemacs/layers ()
+  (setq-default
+   dotspacemacs-configuration-layers '(of-custom-theme
+                                       of-keybidings))
+ )
+#+END_SRC
