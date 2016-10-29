@@ -19,4 +19,8 @@
      (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
      (abort-recursive-edit)))
 
+(defun iterm-here ()
+  (interactive)
+  (dired-smart-shell-command "open -a iTerm $PWD" nil nil))
+
 ;; EOF

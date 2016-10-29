@@ -14,6 +14,8 @@
 ;; (global-set-key (kbd "s-x") 'counsel-M-x)
 (define-key evil-normal-state-map (kbd "C-a") 'evil-numbers/inc-at-pt)
 
+(define-key global-map (kbd "C-0") 'iterm-here)
+
 (define-key global-map (kbd "s-c") 'of-keybindings/pbcopy)
 (define-key global-map (kbd "s-v") 'simpleclip-paste)
 
