@@ -3,10 +3,7 @@
 ;;  File: packages.el
 ;;
 
-(defconst of-keybindings-packages
-  '(evil
-    simpleclip)
-  )
+(defconst of-keybindings-packages '(evil simpleclip evil-embrace))
 
 (defun of-keybindings/pre-init-evil ()
   (setq avy-all-windows 'all-frames)
@@ -45,6 +42,12 @@
 
   (require 'simpleclip)
   (simpleclip-mode 1)
+  )
+
+(defun of-keybindings/post-init-evil-embrace ()
+  (use-package evil-embrace
+    :config
+    (evil-embrace-enable-evil-surround-integration))
   )
 
 ;; EOF
