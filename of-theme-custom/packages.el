@@ -4,13 +4,15 @@
 ;;
 
 (defconst of-theme-custom-packages
-  '(auto-dim-other-buffers
+  '(all-the-icons
+    auto-dim-other-buffers
     highlight-quoted
     highlight-symbol
     spaceline
     hl-line+
     fill-column-indicator
     ;;; themes
+    doom-themes
     hc-zenburn-theme
     ample-theme
     material-theme
@@ -109,6 +111,7 @@
                                             (smartparens-mode "" "")
                                             (which-key-mode "" "")
                                             (whitespace-mode "" "")
+                                            (editorconfig-mode "" "")
                                             (yas-minor-mode " ⓨ" " y")))
   )
 
@@ -124,5 +127,26 @@
 (defun of-theme-custom/init-hc-zenburn-theme ())
 
 (defun of-theme-custom/init-solarized-theme ())
+
+(defun of-theme-custom/init-doom-themes ()
+  (use-package doom-themes
+    :init
+    (setq doom-enable-brighter-comments t
+          )
+
+    (require 'doom-themes)
+    (load-theme 'doom-one t)
+
+    (add-hook 'find-file-hook 'doom-buffer-mode)
+    ;; brighter minibuffer when active
+    (add-hook 'minibuffer-setup-hook 'doom-brighten-minibuffer)
+    ;; Custom neotree theme
+    (require 'doom-neotree)
+    )
+  )
+
+(defun of-theme-custom/init-all-the-icons ()
+  (use-package all-the-icons
+    :ensure t))
 
 ;; EOF

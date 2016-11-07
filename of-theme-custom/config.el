@@ -52,6 +52,19 @@
     (header-line :background "gray26" :foreground "#81b9e3" :bold t)
     )
    ;;;
+   ;;; Doom Themes
+   ;;;   (https://github.com/hlissner/emacs-doom-theme)
+   ;;;
+   (doom-one
+    (auto-dim-other-buffers-face :background "#22252c")
+    (mode-line-highlight :inherit mode-line
+                         :foreground "MediumPurple"
+                         :weight bold)
+    (mode-line-buffer-id :inherit mode-line
+                         :foreground "#afafd7"
+                         :weight bold)
+    )
+   ;;;
    ;;; Idea Darkula Theme
    ;;;   (https://github.com/fommil/darcula-theme-emacs)
    ;;;

@@ -11,6 +11,10 @@
   (load-library "find-lisp")
 
   (setq-default
+   ;;; for better look on doom themes
+   org-fontify-whole-heading-line t
+   org-fontify-done-headline t
+   org-fontify-quote-and-verse-blocks t
    ;;; org-mode settings
    org-agenda-restore-windows-after-quit t
    org-agenda-window-setup 'other-window
