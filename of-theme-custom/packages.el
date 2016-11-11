@@ -69,31 +69,113 @@
                (not (string= (projectile-project-name) (buffer-name))))
       (projectile-project-name)))
 
-  (setq
-   powerline-default-separator 'roundstub
-   custom-spaceline-left '(((persp-name workspace-number window-number)
-                            :fallback evil-state
-                            :separator " ) "
-                            :face highlight-face)
-                           anzu
-                           remote-host
-                           (((projectile-root :when active)
-                             buffer-id)
-                            :separator " -> ")
-                           buffer-modified
-                           ((flycheck-error flycheck-warning flycheck-info)
-                            :when active)
-                           (process :when active)
-                           ;; (minor-modes :separator "," :when active)
-                           (erc-track :when active)
-                           (version-control :when active)
-                           (org-pomodoro :when active)
-                           (org-clock :when active))
-   custom-spaceline-right '((selection-info :when active)
-                            (global-mode :when active)
-                            (new-version :when active)
-                            (line-column :when active)
-                            (buffer-position hud)))
+  (spaceline-define-segment
+      ati-modified "An `all-the-icons' modified segment"
+      (let* ((config-alist
+              '(("*" all-the-icons-faicon-family all-the-icons-faicon "chain-broken" :height 1.2 :v-adjust -0.0)
+                ("-" all-the-icons-faicon-family all-the-icons-faicon "link" :height 1.2 :v-adjust -0.0)
+                ("%" all-the-icons-octicon-family all-the-icons-octicon "lock" :height 1.2 :v-adjust 0.1)))
+             (result (cdr (assoc (format-mode-line "%*") config-alist))))
+
+        (propertize (format "%s" (apply (cadr result) (cddr result))) 'face `(:family ,(funcall (car result)) :inherit )))
+      :tight t)
+
+  (spaceline-define-segment
+      ati-mode-icon "An `all-the-icons' segment for the current buffer mode"
+      (let ((icon (all-the-icons-icon-for-buffer)))
+        (unless (symbolp icon) ;; This implies it's the major mode
+          (propertize icon
+                      'help-echo (format "Major-mode: `%s`" major-mode)
+                      'display '(raise 0.0)
+                      'face `(:height 1.0 :family ,(all-the-icons-icon-family-for-buffer) :inherit)))))
+
+  (spaceline-define-segment
+      ati-position "An `all-the-icons' segment for the Row and Column of the current point"
+      (propertize (format-mode-line "%l:%c") 'face `(:height 0.9 :inherit) 'display '(raise 0.1)))
+
+  (defun spaceline---github-vc ()
+    "Function to return the Spaceline formatted GIT Version Control text."
+    (let ((branch (mapconcat 'concat (cdr (split-string vc-mode "[:-]")) "-")))
+      (concat
+      (propertize (all-the-icons-alltheicon "git") 'face '(:height 1.1 :inherit) 'display '(raise 0.1))
+      (propertize " · ")
+      (propertize (format "%s" (all-the-icons-octicon "git-branch"))
+                  'face `(:family ,(all-the-icons-octicon-family) :height 1.0 :inherit)
+                  'display '(raise 0.2))
+      (propertize (format " %s" branch) 'face `(:height 0.9 :inherit) 'display '(raise 0.2)))))
+
+  (defun spaceline---svn-vc ()
+    "Function to return the Spaceline formatted SVN Version Control text."
+    (let ((revision (cadr (split-string vc-mode "-"))))
+      (concat
+      (propertize (format " %s" (all-the-icons-faicon "cloud")) 'face `(:height 1.2) 'display '(raise -0.1))
+      (propertize (format " · %s" revision) 'face `(:height 0.9)))))
+
+  (spaceline-define-segment
+      ati-vc-icon "An `all-the-icons' segment for the current Version Control icon"
+      (when vc-mode
+        (cond ((string-match "Git[:-]" vc-mode) (spaceline---github-vc))
+              ((string-match "SVN-" vc-mode) (spaceline---svn-vc))
+              (t (propertize (format "%s" vc-mode)))))
+      :when active)
+
+  (defvar spaceline--upgrades nil)
+  (defun spaceline--count-upgrades ()
+    "Function to count the number of package upgrades needed."
+    (let ((buf (current-buffer)))
+      (package-list-packages-no-fetch)
+      (with-current-buffer "*Packages*"
+        (setq spaceline--upgrades (length (package-menu--find-upgrades))))
+      (switch-to-buffer buf)))
+  (advice-add 'package-menu-execute :after 'spaceline--count-upgrades)
+
+  (spaceline-define-segment
+      ati-package-updates "An `all-the-icons' spaceline segment to indicate number of package updates needed"
+      (let ((num (or spaceline--upgrades (spaceline--count-upgrades))))
+        (propertize
+         (concat
+          (propertize (format "%s" (all-the-icons-octicon "package"))
+                      'face `(:family ,(all-the-icons-octicon-family) :height 1.1 :inherit)
+                      'display '(raise 0.1))
+          (propertize (format " %d " num) 'face `(:height 0.9 :inherit) 'display '(raise 0.2)))
+         'help-echo "Open Packages Menu"
+         'mouse-face '(:box 1)
+         'local-map (make-mode-line-mouse-map
+                     'mouse-1 (lambda () (interactive) (package-list-packages)))))
+      :when (and active (> (or spaceline--upgrades (spaceline--count-upgrades)) 0)))
+
+  (spaceline-define-segment
+      ati-buffer-size "Buffer Size"
+      (propertize (format-mode-line "%I") 'face `(:height 0.9 :inherit) 'display '(raise 0.1))
+      :tight t)
+
+  (setq powerline-default-separator 'roundstub)
+
+  (setq custom-spaceline-left '(((persp-name workspace-number window-number)
+                                 :fallback evil-state
+                                 :separator " ) "
+                                 :face highlight-face)
+                                anzu
+                                remote-host
+                                (((projectile-root :when active) buffer-id)
+                                 :separator " -> ")
+                                ;; (ati-buffer-size)
+                                (ati-mode-icon :when active)
+                                (ati-modified :when active)
+                                ((flycheck-error flycheck-warning flycheck-info)
+                                 :when active)
+                                (process :when active)
+                                (erc-track :when active)
+                                (ati-vc-icon :when active)
+                                (org-pomodoro :when active)
+                                (org-clock :when active)))
+
+  (setq custom-spaceline-right '((selection-info :when active)
+                                 (purpose :when active)
+                                 (global-mode :when active)
+                                 (ati-package-updates :when active)
+                                 (line-column :when active)
+                                 (buffer-position hud)))
 
   ;; using defined variables to install a new spaceline configuration on the fly
   (spaceline-install custom-spaceline-left custom-spaceline-right)
@@ -111,6 +193,8 @@
                                             (which-key-mode "" "")
                                             (whitespace-mode "" "")
                                             (editorconfig-mode "" "")
+                                            (linum-relative-mode "" "")
+                                            (doom-buffer-mode "" "")
                                             (yas-minor-mode " ⓨ" " y")))
   )
 
@@ -131,14 +215,16 @@
   (use-package doom-themes
     :init
     (setq doom-enable-brighter-comments t
-          doom-enable-bold nil)
-
-    (require 'doom-themes)
+          doom-enable-bold nil
+          doom-neotree-file-icons t
+          doom-neotree-line-spacing 0
+          doom-neotree-enable-file-icons t)
+    :config
     (load-theme 'doom-one t)
-
-    (add-hook 'find-file-hook 'doom-buffer-mode)
+    ;; (add-hook 'find-file-hook 'doom-buffer-mode)
     ;; brighter minibuffer when active
     (add-hook 'minibuffer-setup-hook 'doom-brighten-minibuffer)
+    (require 'doom-neotree)
     )
   )
 
