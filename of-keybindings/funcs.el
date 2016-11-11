@@ -21,6 +21,6 @@
 
 (defun iterm-here ()
   (interactive)
-  (dired-smart-shell-command "open -a iTerm $PWD" nil nil))
+  (dired-smart-shell-command "open -a ~/Applications/iTerm.app $PWD" nil nil))
 
 ;; EOF
