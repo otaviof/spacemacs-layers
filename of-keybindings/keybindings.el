@@ -10,8 +10,8 @@
 (evil-define-key 'visual evil-surround-mode-map "s" 'evil-substitute)
 (evil-define-key 'visual evil-surround-mode-map "S" 'evil-surround-region)
 
-(global-set-key (kbd "s-x") 'helm-M-x)
-;; (global-set-key (kbd "s-x") 'counsel-M-x)
+;; (global-set-key (kbd "s-x") 'helm-M-x)
+(global-set-key (kbd "s-x") 'counsel-M-x)
 (define-key evil-normal-state-map (kbd "C-a") 'evil-numbers/inc-at-pt)
 
 (define-key global-map (kbd "C-0") 'iterm-here)
@@ -29,6 +29,9 @@
 (define-key global-map (kbd "s-7") 'select-window-7)
 (define-key global-map (kbd "s-8") 'select-window-8)
 (define-key global-map (kbd "s-9") 'select-window-9)
+
+(with-eval-after-load 'neotree
+  (define-key neotree-mode-map (kbd "o") 'neotree-enter))
 
 (define-key evil-visual-state-map [escape]
   'keyboard-quit)

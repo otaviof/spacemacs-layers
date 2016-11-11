@@ -4,8 +4,7 @@
 ;;
 
 (defconst of-theme-custom-packages
-  '(all-the-icons
-    auto-dim-other-buffers
+  '(auto-dim-other-buffers
     highlight-quoted
     highlight-symbol
     spaceline
@@ -132,7 +131,7 @@
   (use-package doom-themes
     :init
     (setq doom-enable-brighter-comments t
-          )
+          doom-enable-bold nil)
 
     (require 'doom-themes)
     (load-theme 'doom-one t)
@@ -140,13 +139,7 @@
     (add-hook 'find-file-hook 'doom-buffer-mode)
     ;; brighter minibuffer when active
     (add-hook 'minibuffer-setup-hook 'doom-brighten-minibuffer)
-    ;; Custom neotree theme
-    (require 'doom-neotree)
     )
   )
-
-(defun of-theme-custom/init-all-the-icons ()
-  (use-package all-the-icons
-    :ensure t))
 
 ;; EOF

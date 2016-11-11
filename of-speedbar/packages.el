@@ -28,11 +28,9 @@
     :config
     (setq
      sr-speedbar-width 30
-     sr-speedbar-window 0
+     sr-speedbar-window 0 ;; same than neotree
      sr-speedbar-right-side nil
      sr-speedbar-max-width 66
-     speedbar-use-images nil
-     sr-speedbar-use-images nil
      sr-speedbar-verbosity-level 0
      sr-speedbar-width-console 21
      sr-speedbar-width-x 21
