@@ -63,6 +63,45 @@
     (mode-line-buffer-id :inherit mode-line
                          :foreground "#afafd7"
                          :weight bold)
+    (mode-line-highlight :inherit mode-line
+                         :foreground "MediumPurple"
+                         :weight bold)
+    (mode-line-buffer-id :inherit mode-line
+                         :foreground "#afafd7"
+                         :weight bold)
+    (spaceline-evil-normal :inherit mode-line
+                           :foreground "Black"
+                           :background "Orange1"
+                           :overline "Orange1"
+                           :underline "Orange1"
+                           :weight bold)
+    (spaceline-evil-insert :inherit mode-line
+                           :foreground "Black"
+                           :background "#2d9574"
+                           :overline "#2d9574"
+                           :underline "#2d9574"
+                           :weight bold)
+    (spacemacs-replace-face :inherit mode-line
+                            :foreground "Black"
+                            :background "Tomato"
+                            :overline "Tomato"
+                            :underline "Tomato"
+                            :weight bold)
+    (spaceline-evil-visual :inherit mode-line
+                           :foreground "Black"
+                           :background "DimGray"
+                           :overline "DimGray"
+                           :underline "DimGray"
+                           :weight bold)
+    (spacemacs-emacs-face :inherit mode-line
+                          :foreground "Black"
+                          :background "MediumOrchid"
+                          :overline "MediumOrchid"
+                          :underline "MediumOrchid"
+                          :weight bold)
+    (neo-root-dir-face :height 1.1)
+    (neo-dir-link-face :height 1.0)
+    (neo-file-link-face :height 0.9)
     )
    ;;;
    ;;; Idea Darkula Theme
