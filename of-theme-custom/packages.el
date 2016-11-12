@@ -67,7 +67,9 @@
     (when (and (fboundp 'projectile-project-p)
                (stringp (projectile-project-p))
                (not (string= (projectile-project-name) (buffer-name))))
-      (projectile-project-name)))
+      (propertize (projectile-project-name)
+                  'face `(:height 0.9 :slant italic :inherit))
+      ))
 
   (spaceline-define-segment
       ati-modified "An `all-the-icons' modified segment"
@@ -97,12 +99,12 @@
     "Function to return the Spaceline formatted GIT Version Control text."
     (let ((branch (mapconcat 'concat (cdr (split-string vc-mode "[:-]")) "-")))
       (concat
-      (propertize (all-the-icons-alltheicon "git") 'face '(:height 1.1 :inherit) 'display '(raise 0.1))
-      (propertize " · ")
-      (propertize (format "%s" (all-the-icons-octicon "git-branch"))
-                  'face `(:family ,(all-the-icons-octicon-family) :height 1.0 :inherit)
-                  'display '(raise 0.2))
-      (propertize (format " %s" branch) 'face `(:height 0.9 :inherit) 'display '(raise 0.2)))))
+       (propertize (all-the-icons-alltheicon "git") 'face '(:height 1.1 :inherit) 'display '(raise 0.1))
+       (propertize " · ")
+       (propertize (format "%s " (all-the-icons-octicon "git-branch"))
+                   'face `(:family ,(all-the-icons-octicon-family) :height 1.0 :inherit)
+                   'display '(raise 0.2))
+       (propertize (format "%s" branch) 'face `(height 0.85 :foreground "PaleGoldenrod") 'display '(raise 0.2)))))
 
   (defun spaceline---svn-vc ()
     "Function to return the Spaceline formatted SVN Version Control text."
@@ -216,6 +218,7 @@
     :init
     (setq doom-enable-brighter-comments t
           doom-enable-bold nil
+          doom-enable-italic t
           doom-neotree-file-icons t
           doom-neotree-line-spacing 0
           doom-neotree-enable-file-icons t)
