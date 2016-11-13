@@ -69,7 +69,8 @@
                (not (string= (projectile-project-name) (buffer-name))))
       (propertize (projectile-project-name)
                   'face `(:height 0.9 :slant italic :inherit))
-      ))
+      )
+    :tight nil)
 
   (spaceline-define-segment
       ati-modified "An `all-the-icons' modified segment"
@@ -89,37 +90,55 @@
           (propertize icon
                       'help-echo (format "Major-mode: `%s`" major-mode)
                       'display '(raise 0.0)
-                      'face `(:height 1.0 :family ,(all-the-icons-icon-family-for-buffer) :inherit)))))
+                      'face `(:height 1.0 :family
+                                      ,(all-the-icons-icon-family-for-buffer) :inherit))))
+      :tight nil
+      )
 
   (spaceline-define-segment
       ati-position "An `all-the-icons' segment for the Row and Column of the current point"
-      (propertize (format-mode-line "%l:%c") 'face `(:height 0.9 :inherit) 'display '(raise 0.1)))
+      (propertize (format-mode-line "%l:%c")
+                  'face `(:height 0.75 :underline t :inherit)
+                  'display '(raise 0.2)))
 
   (defun spaceline---github-vc ()
     "Function to return the Spaceline formatted GIT Version Control text."
     (let ((branch (mapconcat 'concat (cdr (split-string vc-mode "[:-]")) "-")))
       (concat
-       (propertize (all-the-icons-alltheicon "git") 'face '(:height 1.1 :inherit) 'display '(raise 0.1))
-       (propertize " · ")
        (propertize (format "%s " (all-the-icons-octicon "git-branch"))
                    'face `(:family ,(all-the-icons-octicon-family) :height 1.0 :inherit)
-                   'display '(raise 0.2))
-       (propertize (format "%s" branch) 'face `(height 0.85 :foreground "PaleGoldenrod") 'display '(raise 0.2)))))
+                   'display '(raise 0.0))
+       (propertize (format "%s" branch)
+                   'face `(:height 0.85 :slant italic :foreground "PaleGoldenrod")
+                   'display '(raise 0.0))
+       )))
 
   (defun spaceline---svn-vc ()
     "Function to return the Spaceline formatted SVN Version Control text."
     (let ((revision (cadr (split-string vc-mode "-"))))
       (concat
-      (propertize (format " %s" (all-the-icons-faicon "cloud")) 'face `(:height 1.2) 'display '(raise -0.1))
-      (propertize (format " · %s" revision) 'face `(:height 0.9)))))
+       (propertize (format " %s" revision)
+                   'face `(:height 0.85))
+       )))
 
   (spaceline-define-segment
-      ati-vc-icon "An `all-the-icons' segment for the current Version Control icon"
+      ati-vc-branch-custom "An `all-the-icons' segment for the current Version Control icon"
       (when vc-mode
         (cond ((string-match "Git[:-]" vc-mode) (spaceline---github-vc))
-              ((string-match "SVN-" vc-mode) (spaceline---svn-vc))
-              (t (propertize (format "%s" vc-mode)))))
+              ((string-match "SVN-" vc-mode) (spaceline---svn-vc))))
       :when active)
+
+  (spaceline-define-segment
+      ati-vc-icon-custom "An `all-the-icons' VCS representation"
+      (when vc-mode
+        (cond ((string-match "Git[:-]" vc-mode)
+               (propertize (all-the-icons-alltheicon "git")
+                           'face '(:height 1.1 :inherit) 'display '(raise 0.1)))
+              ((string-match "SVN-" vc-mode)
+               (propertize (format " %s" (all-the-icons-faicon "cloud"))
+                           'face `(:height 1.2) 'display '(raise -0.1)))))
+      :when active
+      )
 
   (defvar spaceline--upgrades nil)
   (defun spaceline--count-upgrades ()
@@ -148,36 +167,48 @@
 
   (spaceline-define-segment
       ati-buffer-size "Buffer Size"
-      (propertize (format-mode-line "%I") 'face `(:height 0.9 :inherit) 'display '(raise 0.1))
+      (propertize (format-mode-line "%I")
+                  'face `(:height 0.8 :foreground "DarkGray" :inherit))
       :tight t)
+
+  (spaceline-define-segment small-hud
+    "A HUD that shows which part of the buffer is currently visible."
+    (when (string-match "\%" (format-mode-line "%p"))
+      (powerline-hud highlight-face default-face))
+    :tight t)
 
   (setq powerline-default-separator 'roundstub)
 
-  (setq custom-spaceline-left '(((persp-name workspace-number window-number)
+  (setq custom-spaceline-left '(
+                                ((persp-name workspace-number window-number)
                                  :fallback evil-state
                                  :separator " ) "
                                  :face highlight-face)
-                                anzu
-                                remote-host
+                                (anzu :when active)
+                                (remote-host :when active)
                                 (((projectile-root :when active) buffer-id)
                                  :separator " -> ")
-                                ;; (ati-buffer-size)
+                                (ati-buffer-size :when active)
                                 (ati-mode-icon :when active)
                                 (ati-modified :when active)
-                                ((flycheck-error flycheck-warning flycheck-info)
-                                 :when active)
+                                (ati-vc-icon-custom :when active)
                                 (process :when active)
                                 (erc-track :when active)
-                                (ati-vc-icon :when active)
                                 (org-pomodoro :when active)
-                                (org-clock :when active)))
+                                (org-clock :when active)
+                                ))
 
-  (setq custom-spaceline-right '((selection-info :when active)
-                                 (purpose :when active)
+  (setq custom-spaceline-right '(
+                                 ((flycheck-error flycheck-warning flycheck-info) :when active)
+                                 (selection-info :when active)
+                                 ;; (purpose :when active)
                                  (global-mode :when active)
-                                 (ati-package-updates :when active)
-                                 (line-column :when active)
-                                 (buffer-position hud)))
+                                 (ati-vc-branch-custom)
+                                 ;; (ati-package-updates :when active)
+                                 (ati-position)
+                                 (buffer-position)
+                                 (hud)
+                                 ))
 
   ;; using defined variables to install a new spaceline configuration on the fly
   (spaceline-install custom-spaceline-left custom-spaceline-right)
@@ -221,7 +252,8 @@
           doom-enable-italic t
           doom-neotree-file-icons t
           doom-neotree-line-spacing 0
-          doom-neotree-enable-file-icons t)
+          doom-neotree-enable-file-icons t
+          doom-neotree-project-size 1.2)
     :config
     (load-theme 'doom-one t)
     ;; (add-hook 'find-file-hook 'doom-buffer-mode)
