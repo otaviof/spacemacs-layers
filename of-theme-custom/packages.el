@@ -20,6 +20,7 @@
   )
 
 (defun of-theme-custom/init-auto-dim-other-buffers ()
+
   (use-package auto-dim-other-buffers
     :ensure t
     :init
@@ -171,13 +172,15 @@
                   'face `(:height 0.8 :foreground "DarkGray" :inherit))
       :tight t)
 
-  (spaceline-define-segment small-hud
-    "A HUD that shows which part of the buffer is currently visible."
-    (when (string-match "\%" (format-mode-line "%p"))
-      (powerline-hud highlight-face default-face))
-    :tight t)
+  (spaceline-define-segment
+      ati-buffer-position "The current approximate buffer position, in percent."
+      (propertize "%p" 'face `(:height 0.9 :bold t :inherit))
+      :tight nil
+      )
 
-  (setq powerline-default-separator 'roundstub)
+  ;;
+  ;; Define "left" and "right" for Spaceline major sections.
+  ;;
 
   (setq custom-spaceline-left '(
                                 ((persp-name workspace-number window-number)
@@ -199,16 +202,17 @@
                                 ))
 
   (setq custom-spaceline-right '(
-                                 ((flycheck-error flycheck-warning flycheck-info) :when active)
-                                 (selection-info :when active)
-                                 ;; (purpose :when active)
-                                 (global-mode :when active)
-                                 (ati-vc-branch-custom)
-                                 ;; (ati-package-updates :when active)
-                                 (ati-position)
-                                 (buffer-position)
-                                 (hud)
+                                 selection-info
+                                 (flycheck-info flycheck-warning flycheck-error)
+                                 ;; purpose
+                                 global-mode
+                                 ati-vc-branch-custom
+                                 ati-position
+                                 ati-buffer-position
+                                 hud
                                  ))
+
+  (setq powerline-default-separator 'roundstub)
 
   ;; using defined variables to install a new spaceline configuration on the fly
   (spaceline-install custom-spaceline-left custom-spaceline-right)
