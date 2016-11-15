@@ -20,7 +20,6 @@
   )
 
 (defun of-theme-custom/init-auto-dim-other-buffers ()
-
   (use-package auto-dim-other-buffers
     :ensure t
     :init
@@ -164,7 +163,10 @@
          'mouse-face '(:box 1)
          'local-map (make-mode-line-mouse-map
                      'mouse-1 (lambda () (interactive) (package-list-packages)))))
-      :when (and active (> (or spaceline--upgrades (spaceline--count-upgrades)) 0)))
+      :when (and active
+                 (> (or spaceline--upgrades (spaceline--count-upgrades)) 0))
+      :tight nil
+      )
 
   (spaceline-define-segment
       ati-buffer-size "Buffer Size"
@@ -207,6 +209,7 @@
                                  ;; purpose
                                  global-mode
                                  ati-vc-branch-custom
+                                 ;; (ati-package-updates :when active)
                                  ati-position
                                  ati-buffer-position
                                  hud
