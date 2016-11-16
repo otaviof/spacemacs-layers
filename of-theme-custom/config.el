@@ -56,7 +56,7 @@
    ;;;   (https://github.com/hlissner/emacs-doom-theme)
    ;;;
    (doom-one
-    (auto-dim-other-buffers-face :background "#22252c")
+    (auto-dim-other-buffers-face :background "#181e26")
     (mode-line-highlight :inherit mode-line
                          :foreground "MediumPurple"
                          :weight bold)
