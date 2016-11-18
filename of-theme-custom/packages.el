@@ -92,8 +92,7 @@
                       'display '(raise 0.0)
                       'face `(:height 1.0 :family
                                       ,(all-the-icons-icon-family-for-buffer) :inherit))))
-      :tight nil
-      )
+      :tight nil)
 
   (spaceline-define-segment
       ati-position "An `all-the-icons' segment for the Row and Column of the current point"
@@ -109,17 +108,13 @@
                    'face `(:family ,(all-the-icons-octicon-family) :height 1.0 :inherit)
                    'display '(raise 0.0))
        (propertize (format "%s" branch)
-                   'face `(:height 0.85 :slant italic :foreground "PaleGoldenrod")
-                   'display '(raise 0.0))
-       )))
+                   'face `(:height 0.8 :slant italic :foreground "PaleGoldenrod")
+                   'display '(raise 0.0)))))
 
   (defun spaceline---svn-vc ()
     "Function to return the Spaceline formatted SVN Version Control text."
     (let ((revision (cadr (split-string vc-mode "-"))))
-      (concat
-       (propertize (format " %s" revision)
-                   'face `(:height 0.85))
-       )))
+      (concat (propertize (format " %s" revision) 'face `(:height 0.8)))))
 
   (spaceline-define-segment
       ati-vc-branch-custom "An `all-the-icons' segment for the current Version Control icon"
@@ -133,14 +128,14 @@
       (when vc-mode
         (cond ((string-match "Git[:-]" vc-mode)
                (propertize (all-the-icons-alltheicon "git")
-                           'face '(:height 1.1 :inherit) 'display '(raise 0.1)))
+                           'face '(:height 1.0 :inherit) 'display '(raise 0.1)))
               ((string-match "SVN-" vc-mode)
                (propertize (format " %s" (all-the-icons-faicon "cloud"))
-                           'face `(:height 1.2) 'display '(raise -0.1)))))
-      :when active
-      )
+                           'face `(:height 1.0) 'display '(raise -0.1)))))
+      :when active)
 
   (defvar spaceline--upgrades nil)
+
   (defun spaceline--count-upgrades ()
     "Function to count the number of package upgrades needed."
     (let ((buf (current-buffer)))
@@ -148,6 +143,7 @@
       (with-current-buffer "*Packages*"
         (setq spaceline--upgrades (length (package-menu--find-upgrades))))
       (switch-to-buffer buf)))
+
   (advice-add 'package-menu-execute :after 'spaceline--count-upgrades)
 
   (spaceline-define-segment
@@ -165,20 +161,18 @@
                      'mouse-1 (lambda () (interactive) (package-list-packages)))))
       :when (and active
                  (> (or spaceline--upgrades (spaceline--count-upgrades)) 0))
-      :tight nil
-      )
+      :tight nil)
 
   (spaceline-define-segment
       ati-buffer-size "Buffer Size"
-      (propertize (format-mode-line "%I")
+      (propertize (format-mode-line "(%I) ")
                   'face `(:height 0.8 :foreground "DarkGray" :inherit))
       :tight t)
 
   (spaceline-define-segment
       ati-buffer-position "The current approximate buffer position, in percent."
       (propertize "%p" 'face `(:height 0.9 :bold t :inherit))
-      :tight nil
-      )
+      :tight nil)
 
   ;;
   ;; Define "left" and "right" for Spaceline major sections.
@@ -220,7 +214,8 @@
   ;; using defined variables to install a new spaceline configuration on the fly
   (spaceline-install custom-spaceline-left custom-spaceline-right)
 
-  (setq spacemacs--diminished-minor-modes '((auto-fill-function " Ⓕ" " F")
+  (setq spacemacs--diminished-minor-modes '(
+                                            (auto-fill-function " Ⓕ" " F")
                                             (color-identifiers-mode " Ⓒ" "")
                                             (company-mode "" "")
                                             (evil-org-mode "" "")
@@ -235,7 +230,8 @@
                                             (editorconfig-mode "" "")
                                             (linum-relative-mode "" "")
                                             (doom-buffer-mode "" "")
-                                            (yas-minor-mode " ⓨ" " y")))
+                                            (yas-minor-mode " ⓨ" " y")
+                                            ))
   )
 
 (defun of-theme-custom/post-init-fill-column-indicator ()
@@ -255,7 +251,7 @@
   (use-package doom-themes
     :init
     (setq doom-enable-brighter-comments t
-          doom-enable-bold nil
+          doom-enable-bold t
           doom-enable-italic t
           doom-neotree-file-icons t
           doom-neotree-line-spacing 0
@@ -266,8 +262,7 @@
     ;; (add-hook 'find-file-hook 'doom-buffer-mode)
     ;; brighter minibuffer when active
     (add-hook 'minibuffer-setup-hook 'doom-brighten-minibuffer)
-    (require 'doom-neotree)
-    )
+    (require 'doom-neotree))
   )
 
 ;; EOF
