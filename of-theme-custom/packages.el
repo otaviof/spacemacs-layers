@@ -4,12 +4,13 @@
 ;;
 
 (defconst of-theme-custom-packages
-  '(auto-dim-other-buffers
+  '(
+    auto-dim-other-buffers
+    fill-column-indicator
     highlight-quoted
     highlight-symbol
-    spaceline
     hl-line+
-    fill-column-indicator
+    spaceline
     ;;; themes
     doom-themes
     hc-zenburn-theme
@@ -128,10 +129,10 @@
       (when vc-mode
         (cond ((string-match "Git[:-]" vc-mode)
                (propertize (all-the-icons-alltheicon "git")
-                           'face '(:height 1.0 :inherit) 'display '(raise 0.1)))
+                           'face '(:height 1.1 :inherit) 'display '(raise 0.1)))
               ((string-match "SVN-" vc-mode)
                (propertize (format " %s" (all-the-icons-faicon "cloud"))
-                           'face `(:height 1.0) 'display '(raise -0.1)))))
+                           'face `(:height 1.1) 'display '(raise -0.1)))))
       :when active)
 
   (defvar spaceline--upgrades nil)
