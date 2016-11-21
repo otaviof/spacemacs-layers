@@ -27,13 +27,13 @@
       "fT" 'spacemacs/sr-speedbar-show-or-hide)
     :config
     (setq
-     sr-speedbar-width 30
+     sr-speedbar-width 32
      sr-speedbar-window 0 ;; same than neotree
      sr-speedbar-right-side nil
      sr-speedbar-max-width 66
      sr-speedbar-verbosity-level 0
-     sr-speedbar-width-console 21
-     sr-speedbar-width-x 21
+     sr-speedbar-width-console 23
+     sr-speedbar-width-x 32
      ;; adding tags to support more extensions on sr-speedbar
      speedbar-supported-extension-expressions
      '(".[ch]\\(\\+\\+\\|pp\\|c\\|h\\|xx\\)?"

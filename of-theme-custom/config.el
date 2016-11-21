@@ -102,6 +102,9 @@
     (neo-root-dir-face :height 1.1)
     (neo-dir-link-face :height 1.0)
     (neo-file-link-face :height 0.9)
+    (speedbar-directory-face :foreground "light blue" :height 1.0)
+    (speedbar-file-face :foreground "cyan" :height 0.9)
+    (speedbar-tag-face :foreground "yellow" :height 0.85)
     )
    ;;;
    ;;; Idea Darkula Theme
