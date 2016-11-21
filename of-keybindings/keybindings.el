@@ -7,6 +7,7 @@
 (spacemacs/set-leader-keys "wF" 'make-frame)
 (spacemacs/set-leader-keys "Db" 'dockerfile-build-buffer)
 (spacemacs/set-leader-keys "DB" 'dockerfile-build-no-cache-buffer)
+(spacemacs/set-leader-keys "fA" 'find-alternate-file)
 
 ;; Evil: Using surround just like Vim (Shift-S)
 (evil-define-key 'visual evil-surround-mode-map "s" 'evil-substitute)
