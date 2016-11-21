@@ -84,8 +84,8 @@
           )
     )
 
-  (add-hook 'speedbar-mode-hook (lambda()
-                                  (set-window-fringes nil 0)))
+  (add-hook 'speedbar-mode-hook (lambda() (set-window-fringes nil 0)))
+  (add-hook 'go-mode-hook (lambda () (speedbar-add-supported-extension ".go")))
   )
 
 ;; EOF
