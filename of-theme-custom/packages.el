@@ -172,7 +172,7 @@
 
   (spaceline-define-segment
       ati-buffer-position "The current approximate buffer position, in percent."
-      (propertize "%p" 'face `(:height 0.9 :bold t :inherit))
+      (propertize "%p" 'face `(:height 0.9 :weight bold :inherit))
       :tight nil)
 
   ;;

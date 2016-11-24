@@ -47,9 +47,9 @@
     (show-paren-match :background "#363636")
     (font-lock-comment-face	:foreground "#888888" :background "gray14")
     ;; helm and bufer prompts
-    (minibuffer-prompt :foreground "orange1" :bold t :background nil)
+    (minibuffer-prompt :foreground "orange1" :weight bold :background nil)
     ;; bread-crumb and helm/ido headers
-    (header-line :background "gray26" :foreground "#81b9e3" :bold t)
+    (header-line :background "gray26" :foreground "#81b9e3")
     )
    ;;;
    ;;; Doom Themes
