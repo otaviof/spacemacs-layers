@@ -3,8 +3,7 @@
 ;;  File: packages.el
 ;;
 
-(defconst of-org-packages '(org
-                            org-journal))
+(defconst of-org-packages '(org org-journal))
 
 (defun of-org/post-init-org ()
   ;; using to find agenda files under org directory
@@ -67,12 +66,8 @@
 
   ;; letting auto-fill enabled for org-mode by default
   (add-hook 'org-mode-hook 'auto-fill-mode)
-
-  ;; adding a more extensive support on programming languages
-  (org-babel-do-load-languages 'org-babel-load-languages
-                               '((perl . t)
-                                 (ruby . t)
-                                 (sh . t)))
+  ;; disabling line-numbers on org-mode files (performance)
+  (add-hook 'org-mode-hook 'nolinum)
   )
 
 (defun of-org/init-org-journal ()

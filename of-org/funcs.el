@@ -8,4 +8,8 @@
   (org-projectile:capture-for-current-project)
   )
 
+(defun nolinum ()
+  (global-linum-mode 0)
+)
+
 ;; EOF
