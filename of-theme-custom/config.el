@@ -57,18 +57,15 @@
    ;;;
    (doom-one
     (auto-dim-other-buffers-face :background "#181e26")
-    (mode-line-highlight :inherit mode-line
-                         :foreground "MediumPurple"
-                         :weight bold)
-    (mode-line-buffer-id :inherit mode-line
-                         :foreground "#afafd7"
-                         :weight semi-bold)
-    (mode-line-highlight :inherit mode-line
-                         :foreground "MediumPurple"
-                         :weight bold)
-    (mode-line-buffer-id :inherit mode-line
-                         :foreground "#afafd7"
-                         :weight semi-bold)
+    (aw-leading-char-face :foreground "red"
+                         :height 6.6
+                          :weight ultra-bold
+                          :width ultra-expanded)
+    (mode-line :background "#353a42")
+    (mode-line-inactive :background "#1e2022" :foreground "#464D59")
+    (mode-line-buffer-id-inactive :background "#464D59" :foreground "#0F1726")
+    (mode-line-highlight :foreground "MediumPurple" :weight bold)
+    (mode-line-buffer-id :foreground "#afafd7" :weight semi-bold)
     (spaceline-evil-normal :inherit mode-line
                            :foreground "Black"
                            :background "Orange1"
