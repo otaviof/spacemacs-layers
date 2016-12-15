@@ -3,7 +3,7 @@
 ;;  File: packages.el
 ;;
 
-(defconst of-org-packages '(org org-journal))
+(defconst of-org-packages '(org))
 
 (defun of-org/post-init-org ()
   ;; using to find agenda files under org directory
@@ -53,8 +53,7 @@
                            ("nl" "Location"
                             entry (file+headline "~/org/_notes.org" "Notes")
                              "* %?\n%i\n%U\n%a"
-                             :empty-lines 1))
-   )
+                             :empty-lines 1)))
 
   ;; letting it available for M-x, used to export documents
   (require 'ox-confluence)
@@ -69,13 +68,3 @@
   ;; disabling line-numbers on org-mode files (performance)
   (add-hook 'org-mode-hook 'nolinum)
   )
-
-(defun of-org/init-org-journal ()
- (use-package org-journal
-   :init
-   (setq org-journal-dir "~/org/me/_journal"
-         org-journal-file-format "%Y-%m-%d.org")
-   )
- )
-
-;; EOF
