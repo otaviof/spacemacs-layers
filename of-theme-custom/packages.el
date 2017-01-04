@@ -260,7 +260,7 @@
           doom-neotree-project-size 1.2)
     :config
     (load-theme 'doom-one t)
-    ;; (add-hook 'find-file-hook 'doom-buffer-mode)
+    (add-hook 'find-file-hook 'doom-buffer-mode)
     ;; brighter minibuffer when active
     (add-hook 'minibuffer-setup-hook 'doom-brighten-minibuffer)
     (require 'doom-neotree))
