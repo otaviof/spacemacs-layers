@@ -63,6 +63,8 @@
   )
 
 (defun of-theme-custom/post-init-spaceline ()
+  (require 'all-the-icons)
+
   (spaceline-define-segment projectile-root
     "Show the current projectile root."
     (when (and (fboundp 'projectile-project-p)
