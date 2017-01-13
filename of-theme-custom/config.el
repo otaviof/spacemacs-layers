@@ -56,7 +56,7 @@
    ;;;   (https://github.com/hlissner/emacs-doom-theme)
    ;;;
    (doom-one
-    (auto-dim-other-buffers-face :background "#181e26")
+    (auto-dim-other-buffers-face :background "#22252c")
     (aw-leading-char-face :foreground "red"
                          :height 6.6
                           :weight ultra-bold
