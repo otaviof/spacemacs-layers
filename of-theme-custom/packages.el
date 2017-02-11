@@ -97,24 +97,23 @@
   (spaceline-define-segment
       ati-position "An `all-the-icons' segment for the Row and Column of the current point"
       (propertize (format-mode-line "%l:%c")
-                  'face `(:height 0.75 :underline t :inherit)
-                  'display '(raise 0.2)))
+                  'face `(:underline t :inherit)))
 
   (defun spaceline---github-vc ()
     "Function to return the Spaceline formatted GIT Version Control text."
     (let ((branch (mapconcat 'concat (cdr (split-string vc-mode "[:-]")) "-")))
       (concat
        (propertize (format "%s " (all-the-icons-octicon "git-branch"))
-                   'face `(:family ,(all-the-icons-octicon-family) :height 1.0 :inherit)
+                   'face `(:family ,(all-the-icons-octicon-family) :inherit)
                    'display '(raise 0.0))
        (propertize (format "%s" branch)
-                   'face `(:height 0.8 :slant italic :foreground "PaleGoldenrod" :inherit)
+                   'face `(:slant italic :foreground "PaleGoldenrod" :inherit)
                    'display '(raise 0.0)))))
 
   (defun spaceline---svn-vc ()
     "Function to return the Spaceline formatted SVN Version Control text."
     (let ((revision (cadr (split-string vc-mode "-"))))
-      (concat (propertize (format " %s" revision) 'face `(:height 0.8)))))
+      (concat (propertize (format " %s" revision)))))
 
   (spaceline-define-segment
       ati-vc-branch-custom "An `all-the-icons' segment for the current Version Control icon"
@@ -127,10 +126,10 @@
       (when vc-mode
         (cond ((string-match "Git[:-]" vc-mode)
                (propertize (all-the-icons-alltheicon "git")
-                           'face '(:height 1.1 :inherit) 'display '(raise 0.1)))
+                           'face '(:inherit) 'display '(raise 0.1)))
               ((string-match "SVN-" vc-mode)
                (propertize (format " %s" (all-the-icons-faicon "cloud"))
-                           'face `(:height 1.1 :inherit) 'display '(raise -0.1))))))
+                           'face `(:inherit) 'display '(raise -0.1))))))
 
   (defvar spaceline--upgrades nil)
 
@@ -150,9 +149,9 @@
         (propertize
          (concat
           (propertize (format "%s" (all-the-icons-octicon "package"))
-                      'face `(:family ,(all-the-icons-octicon-family) :height 1.1 :inherit)
+                      'face `(:family ,(all-the-icons-octicon-family) :inherit)
                       'display '(raise 0.1))
-          (propertize (format " %d " num) 'face `(:height 0.9 :inherit) 'display '(raise 0.2)))
+          (propertize (format " %d " num) 'face `(:inherit) 'display '(raise 0.2)))
          'help-echo "Open Packages Menu"
          'mouse-face '(:box 1)
          'local-map (make-mode-line-mouse-map
@@ -163,11 +162,11 @@
   (spaceline-define-segment
       ati-buffer-size "Buffer Size"
       (propertize (format-mode-line "%I")
-                  'face `(:height 0.8 :foreground "DarkGray" :inherit)))
+                  'face `(:foreground "DarkGray" :inherit)))
 
   (spaceline-define-segment
       ati-buffer-position "The current approximate buffer position, in percent."
-      (propertize "%p" 'face `(:height 0.9 :weight bold :inherit)))
+      (propertize "%p" 'face `(:weight bold :inherit)))
 
   (setq powerline-default-separator 'roundstub)
 
@@ -178,7 +177,8 @@
                   :fallback evil-state
                   :separator " ) "
                   :face highlight-face)
-                 anzu auto-compile
+                 (anzu :when active)
+                 auto-compile
                  remote-host
                  ((projectile-root buffer-id)
                   :separator " -> ")
@@ -188,9 +188,9 @@
                  (erc-track :when active)
                  (org-pomodoro :when active)
                  (org-clock :when active))
-               '(selection-info
+               '((global-mode :when active)
+                 selection-info
                  (flycheck-info flycheck-warning flycheck-error)
-                 (global-mode :when active)
                  ati-vc-branch-custom
                  (ati-buffer-size ati-position)
                  (ati-buffer-position hud))))
