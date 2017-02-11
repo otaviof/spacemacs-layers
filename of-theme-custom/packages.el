@@ -11,6 +11,7 @@
     highlight-symbol
     hl-line+
     spaceline
+    ivy-rich
     ;;; themes
     doom-themes
     hc-zenburn-theme
@@ -63,6 +64,7 @@
   )
 
 (defun of-theme-custom/post-init-spaceline ()
+  (require 'spaceline-segments)
   (require 'all-the-icons)
 
   (spaceline-define-segment projectile-root
@@ -71,20 +73,17 @@
                (stringp (projectile-project-p))
                (not (string= (projectile-project-name) (buffer-name))))
       (propertize (projectile-project-name)
-                  'face `(:height 0.9 :slant italic :inherit))
-      )
-    :tight nil)
+                  'face `(:slant italic :inherit))))
 
   (spaceline-define-segment
       ati-modified "An `all-the-icons' modified segment"
       (let* ((config-alist
-              '(("*" all-the-icons-faicon-family all-the-icons-faicon "chain-broken" :height 1.2 :v-adjust -0.0)
-                ("-" all-the-icons-faicon-family all-the-icons-faicon "link" :height 1.2 :v-adjust -0.0)
-                ("%" all-the-icons-octicon-family all-the-icons-octicon "lock" :height 1.2 :v-adjust 0.1)))
+              '(("*" all-the-icons-faicon-family all-the-icons-faicon "chain-broken" :v-adjust -0.0)
+                ("-" all-the-icons-faicon-family all-the-icons-faicon "link" :v-adjust -0.0)
+                ("%" all-the-icons-octicon-family all-the-icons-octicon "lock" :v-adjust 0.1)))
              (result (cdr (assoc (format-mode-line "%*") config-alist))))
 
-        (propertize (format "%s" (apply (cadr result) (cddr result))) 'face `(:family ,(funcall (car result)) :inherit )))
-      :tight t)
+        (propertize (format "%s" (apply (cadr result) (cddr result))) 'face `(:family ,(funcall (car result)) :inherit))))
 
   (spaceline-define-segment
       ati-mode-icon "An `all-the-icons' segment for the current buffer mode"
@@ -93,9 +92,7 @@
           (propertize icon
                       'help-echo (format "Major-mode: `%s`" major-mode)
                       'display '(raise 0.0)
-                      'face `(:height 1.0 :family
-                                      ,(all-the-icons-icon-family-for-buffer) :inherit))))
-      :tight nil)
+                      'face `( :family ,(all-the-icons-icon-family-for-buffer) :inherit)))))
 
   (spaceline-define-segment
       ati-position "An `all-the-icons' segment for the Row and Column of the current point"
@@ -111,7 +108,7 @@
                    'face `(:family ,(all-the-icons-octicon-family) :height 1.0 :inherit)
                    'display '(raise 0.0))
        (propertize (format "%s" branch)
-                   'face `(:height 0.8 :slant italic :foreground "PaleGoldenrod")
+                   'face `(:height 0.8 :slant italic :foreground "PaleGoldenrod" :inherit)
                    'display '(raise 0.0)))))
 
   (defun spaceline---svn-vc ()
@@ -123,8 +120,7 @@
       ati-vc-branch-custom "An `all-the-icons' segment for the current Version Control icon"
       (when vc-mode
         (cond ((string-match "Git[:-]" vc-mode) (spaceline---github-vc))
-              ((string-match "SVN-" vc-mode) (spaceline---svn-vc))))
-      :when active)
+              ((string-match "SVN-" vc-mode) (spaceline---svn-vc)))))
 
   (spaceline-define-segment
       ati-vc-icon-custom "An `all-the-icons' VCS representation"
@@ -134,8 +130,7 @@
                            'face '(:height 1.1 :inherit) 'display '(raise 0.1)))
               ((string-match "SVN-" vc-mode)
                (propertize (format " %s" (all-the-icons-faicon "cloud"))
-                           'face `(:height 1.1) 'display '(raise -0.1)))))
-      :when active)
+                           'face `(:height 1.1 :inherit) 'display '(raise -0.1))))))
 
   (defvar spaceline--upgrades nil)
 
@@ -163,78 +158,43 @@
          'local-map (make-mode-line-mouse-map
                      'mouse-1 (lambda () (interactive) (package-list-packages)))))
       :when (and active
-                 (> (or spaceline--upgrades (spaceline--count-upgrades)) 0))
-      :tight nil)
+                 (> (or spaceline--upgrades (spaceline--count-upgrades)) 0)))
 
   (spaceline-define-segment
       ati-buffer-size "Buffer Size"
-      (propertize (format-mode-line "(%I) ")
-                  'face `(:height 0.8 :foreground "DarkGray" :inherit))
-      :tight t)
+      (propertize (format-mode-line "%I")
+                  'face `(:height 0.8 :foreground "DarkGray" :inherit)))
 
   (spaceline-define-segment
       ati-buffer-position "The current approximate buffer position, in percent."
-      (propertize "%p" 'face `(:height 0.9 :weight bold :inherit))
-      :tight nil)
-
-  ;;
-  ;; Define "left" and "right" for Spaceline major sections.
-  ;;
-
-  (setq custom-spaceline-left '(
-                                ((persp-name workspace-number window-number)
-                                 :fallback evil-state
-                                 :separator " ) "
-                                 :face highlight-face)
-                                (anzu :when active)
-                                (remote-host :when active)
-                                (((projectile-root :when active) buffer-id)
-                                 :separator " -> ")
-                                (ati-buffer-size :when active)
-                                (ati-mode-icon :when active)
-                                (ati-modified :when active)
-                                (ati-vc-icon-custom :when active)
-                                (process :when active)
-                                (erc-track :when active)
-                                (org-pomodoro :when active)
-                                (org-clock :when active)
-                                ))
-
-  (setq custom-spaceline-right '(
-                                 selection-info
-                                 (flycheck-info flycheck-warning flycheck-error)
-                                 ;; purpose
-                                 global-mode
-                                 ati-vc-branch-custom
-                                 ;; (ati-package-updates :when active)
-                                 ati-position
-                                 ati-buffer-position
-                                 hud
-                                 ))
+      (propertize "%p" 'face `(:height 0.9 :weight bold :inherit)))
 
   (setq powerline-default-separator 'roundstub)
 
-  ;; using defined variables to install a new spaceline configuration on the fly
-  (spaceline-install custom-spaceline-left custom-spaceline-right)
-
-  (setq spacemacs--diminished-minor-modes '(
-                                            (auto-fill-function " Ⓕ" " F")
-                                            (color-identifiers-mode " Ⓒ" "")
-                                            (company-mode "" "")
-                                            (evil-org-mode "" "")
-                                            (flycheck-mode " ⓢ" " s")
-                                            (global-whitespace-mode "" "")
-                                            (helm-gtags-mode "" "")
-                                            (holy-mode "" "")
-                                            (hybrid-mode "" "")
-                                            (smartparens-mode "" "")
-                                            (which-key-mode "" "")
-                                            (whitespace-mode "" "")
-                                            (editorconfig-mode "" "")
-                                            (linum-relative-mode "" "")
-                                            (doom-buffer-mode "" "")
-                                            (yas-minor-mode " ⓨ" " y")
-                                            ))
+    (add-hook 'spacemacs-post-user-config-hook
+            (lambda ()
+              (spaceline-install
+               '(((persp-name workspace-number window-number)
+                  :fallback evil-state
+                  :separator " ) "
+                  :face highlight-face)
+                 anzu auto-compile
+                 remote-host
+                 ((projectile-root buffer-id)
+                  :separator " -> ")
+                 ati-modified
+                 (ati-mode-icon ati-vc-icon-custom)
+                 (process :when active)
+                 (erc-track :when active)
+                 (org-pomodoro :when active)
+                 (org-clock :when active))
+               '(selection-info
+                 (flycheck-info flycheck-warning flycheck-error)
+                 (global-mode :when active)
+                 ati-vc-branch-custom
+                 (ati-buffer-size ati-position)
+                 (ati-buffer-position hud))))
+            t)
   )
 
 (defun of-theme-custom/post-init-fill-column-indicator ()
@@ -266,6 +226,12 @@
     ;; brighter minibuffer when active
     (add-hook 'minibuffer-setup-hook 'doom-brighten-minibuffer)
     (require 'doom-neotree))
+  )
+
+(defun of-theme-custom/init-ivy-rich ()
+  (use-package ivy-rich
+    :config
+    (ivy-set-display-transformer 'ivy-switch-buffer 'ivy-rich-switch-buffer-transformer))
   )
 
 ;; EOF
