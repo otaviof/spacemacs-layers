@@ -4,21 +4,19 @@
 ;;
 
 (defconst of-theme-custom-packages
-  '(
-    auto-dim-other-buffers
+  '(auto-dim-other-buffers
+    beacon
     fill-column-indicator
     highlight-quoted
     highlight-symbol
     hl-line+
     spaceline
     ivy-rich
-    ;;; themes
-    doom-themes
     hc-zenburn-theme
     ample-theme
+    doom-themes
     material-theme
-    solarized-theme
-    )
+    solarized-theme)
   )
 
 (defun of-theme-custom/init-auto-dim-other-buffers ()
@@ -82,8 +80,10 @@
                 ("-" all-the-icons-faicon-family all-the-icons-faicon "link" :v-adjust -0.0)
                 ("%" all-the-icons-octicon-family all-the-icons-octicon "lock" :v-adjust 0.1)))
              (result (cdr (assoc (format-mode-line "%*") config-alist))))
-
-        (propertize (format "%s" (apply (cadr result) (cddr result))) 'face `(:family ,(funcall (car result)) :inherit))))
+        (propertize (format "%s" (apply
+                                  (cadr result)
+                                  (cddr result)))
+                    'face `(:family ,(funcall (car result)) :inherit))))
 
   (spaceline-define-segment
       ati-mode-icon "An `all-the-icons' segment for the current buffer mode"
@@ -170,31 +170,34 @@
 
   (setq powerline-default-separator 'roundstub)
 
-    (add-hook 'spacemacs-post-user-config-hook
-            (lambda ()
-              (spaceline-install
-               '(((persp-name workspace-number window-number)
-                  :fallback evil-state
-                  :separator " ) "
-                  :face highlight-face)
-                 (anzu :when active)
-                 auto-compile
-                 remote-host
-                 ((projectile-root buffer-id)
-                  :separator " -> ")
-                 ati-modified
-                 (ati-mode-icon ati-vc-icon-custom)
-                 (process :when active)
-                 (erc-track :when active)
-                 (org-pomodoro :when active)
-                 (org-clock :when active))
-               '((global-mode :when active)
-                 selection-info
-                 (flycheck-info flycheck-warning flycheck-error)
-                 ati-vc-branch-custom
-                 (ati-buffer-size ati-position)
-                 (ati-buffer-position hud))))
-            t)
+  (add-hook 'spacemacs-post-user-config-hook
+          (lambda ()
+            (spaceline-install
+             '(((persp-name workspace-number window-number)
+                :fallback evil-state
+                :separator " ) "
+                :face highlight-face)
+               ((projectile-root buffer-id)
+                :separator " -> ")
+               (process :when active)
+               (ati-mode-icon ati-vc-icon-custom)
+               remote-host
+               (erc-track :when active)
+               (org-pomodoro :when active)
+               (org-clock :when active)
+               ((anzu auto-compile)
+                :face highlight-face
+                :when active)
+               )
+             '((global-mode :when active)
+               selection-info
+               (flycheck-info flycheck-warning flycheck-error)
+               ati-vc-branch-custom
+               (ati-modified ati-buffer-size ati-position)
+               (ati-buffer-position hud))
+             )
+            )
+          t)
   )
 
 (defun of-theme-custom/post-init-fill-column-indicator ()
@@ -210,28 +213,46 @@
 
 (defun of-theme-custom/init-solarized-theme ())
 
+(defun of-theme-custom/init-beacon ()
+  (use-package beacon
+    :ensure t
+    :config
+    (with-eval-after-load 'doom-themes
+      (beacon-mode +1)
+      (setq beacon-color (face-attribute 'highlight :background nil t)
+            beacon-blink-when-buffer-changes t
+            beacon-blink-when-point-moves-vertically 10))
+    )
+)
+
+(defun of-theme-custom/init-ivy-rich ()
+  (use-package ivy-rich
+    :ensure nil
+    :config
+    (ivy-set-display-transformer 'ivy-switch-buffer 'ivy-rich-switch-buffer-transformer))
+  )
+
 (defun of-theme-custom/init-doom-themes ()
   (use-package doom-themes
-    :init
-    (setq doom-enable-brighter-comments t
+    :ensure t
+    :config
+    (setq doom-one-brighter-modeline t
+          doom-enable-brighter-comments t
           doom-enable-bold t
           doom-enable-italic t
           doom-neotree-file-icons t
           doom-neotree-line-spacing 0
           doom-neotree-enable-file-icons t
-          doom-neotree-project-size 1.2)
-    :config
-    (load-theme 'doom-one t)
-    (add-hook 'find-file-hook 'doom-buffer-mode)
-    ;; brighter minibuffer when active
-    (add-hook 'minibuffer-setup-hook 'doom-brighten-minibuffer)
-    (require 'doom-neotree))
-  )
+          doom-neotree-project-size 1.1)
 
-(defun of-theme-custom/init-ivy-rich ()
-  (use-package ivy-rich
-    :config
-    (ivy-set-display-transformer 'ivy-switch-buffer 'ivy-rich-switch-buffer-transformer))
+    (load-theme 'doom-one t)
+
+    (add-hook 'find-file-hook 'doom-buffer-mode)
+    (add-hook 'minibuffer-setup-hook 'doom-brighten-minibuffer)
+
+    (when window-system
+      (require 'doom-neotree))
+   )
   )
 
 ;; EOF

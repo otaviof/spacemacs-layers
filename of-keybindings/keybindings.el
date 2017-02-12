@@ -14,8 +14,8 @@
 (evil-define-key 'visual evil-surround-mode-map "s" 'evil-substitute)
 (evil-define-key 'visual evil-surround-mode-map "S" 'evil-surround-region)
 
-;; (global-set-key (kbd "s-x") 'helm-M-x)
-(global-set-key (kbd "s-x") 'counsel-M-x)
+(global-set-key (kbd "s-x") 'helm-M-x)
+;; (global-set-key (kbd "s-x") 'counsel-M-x)
 (define-key evil-normal-state-map (kbd "C-a") 'evil-numbers/inc-at-pt)
 
 (define-key global-map (kbd "C-0") 'iterm-here)
