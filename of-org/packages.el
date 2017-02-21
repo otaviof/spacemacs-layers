@@ -65,6 +65,4 @@
 
   ;; letting auto-fill enabled for org-mode by default
   (add-hook 'org-mode-hook 'auto-fill-mode)
-  ;; disabling line-numbers on org-mode files (performance)
-  (add-hook 'org-mode-hook 'nolinum)
   )
