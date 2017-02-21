@@ -3,7 +3,10 @@
 ;;  File: packages.el
 ;;
 
-(defconst of-keybindings-packages '(evil simpleclip evil-embrace))
+(defconst of-keybindings-packages '(evil
+                                    simpleclip
+                                    evil-embrace)
+  )
 
 (defun of-keybindings/pre-init-evil ()
   (setq avy-all-windows 'all-frames)

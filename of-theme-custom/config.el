@@ -103,7 +103,7 @@
                           :overline "MediumOrchid"
                           :underline "MediumOrchid"
                           :weight semi-bold)
-    (neo-root-dir-face :height 1.1)
+    (neo-root-dir-face :height 1.3)
     (neo-dir-link-face :height 1.0)
     (neo-file-link-face :height 0.9)
     (speedbar-directory-face :foreground "light blue" :height 1.0)
