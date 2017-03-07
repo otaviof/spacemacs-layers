@@ -243,12 +243,13 @@
           doom-neotree-file-icons t
           doom-neotree-line-spacing 0
           doom-neotree-enable-file-icons t
-          doom-neotree-project-size 1.1)
+          doom-neotree-project-size 1.1
+          )
+    (advice-add 'switch-to-buffer :after 'doom*brighter-buffer-maybe)
+    (advice-add 'display-buffer :after 'doom*brighter-buffer-maybe)
+    (add-hook 'minibuffer-setup-hook 'doom-brighten-minibuffer)
 
     (load-theme 'doom-one t)
-
-    (add-hook 'find-file-hook 'doom-buffer-mode)
-    (add-hook 'minibuffer-setup-hook 'doom-brighten-minibuffer)
 
     (when window-system
       (require 'doom-neotree))
