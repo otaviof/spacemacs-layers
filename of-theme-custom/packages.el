@@ -11,7 +11,7 @@
     highlight-symbol
     hl-line+
     spaceline
-    ivy-rich
+    ;; ivy-rich
     hc-zenburn-theme
     ample-theme
     doom-themes
@@ -220,17 +220,21 @@
     (with-eval-after-load 'doom-themes
       (beacon-mode +1)
       (setq beacon-color (face-attribute 'highlight :background nil t)
+            beacon-blink-delay 0.2
+            beacon-blink-duration 0.4
             beacon-blink-when-buffer-changes t
-            beacon-blink-when-point-moves-vertically 10))
+            beacon-blink-when-point-moves-vertically 10
+            )
+      )
     )
 )
 
-(defun of-theme-custom/init-ivy-rich ()
-  (use-package ivy-rich
-    :ensure nil
-    :config
-    (ivy-set-display-transformer 'ivy-switch-buffer 'ivy-rich-switch-buffer-transformer))
-  )
+;; (defun of-theme-custom/init-ivy-rich ()
+;;   (use-package ivy-rich
+;;     :ensure nil
+;;     :config
+;;     (ivy-set-display-transformer 'ivy-switch-buffer 'ivy-rich-switch-buffer-transformer))
+;;   )
 
 (defun of-theme-custom/init-doom-themes ()
   (use-package doom-themes
