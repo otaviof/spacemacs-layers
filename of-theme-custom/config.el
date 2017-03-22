@@ -61,18 +61,12 @@
                          :height 6.6
                           :weight ultra-bold
                           :width ultra-expanded)
-    ;; (mode-line :background "#353a42")
     (mode-line :foreground "#bbc2cf" :background "#353a42")
-    ;; (mode-line-inactive :background "#1e2022" :foreground "#464D59")
     (mode-line-inactive :foreground "#464D59" :background "#1e2022")
     (mode-line-buffer-id-inactive :background "#464D59" :foreground "#0F1726")
-    ;; (mode-line-highlight :foreground "MediumPurple" :weight bold)
     (mode-line-highlight :weight bold :foreground "MediumPurple")
-    ;; (mode-line-buffer-id :foreground "#afafd7" :weight semi-bold)
     (mode-line-buffer-id :weight semi-bold :foreground "#afafd7")
-    ;; (mode-line-emphasis :foreground "white" :slant italic)
     (mode-line-emphasis :weight bold)
-
     (spaceline-evil-normal :inherit mode-line
                            :foreground "Black"
                            :background "Orange1"
