@@ -24,12 +24,14 @@
 (defun of-eclim/init-feature-mode ()
   "Initialize Cucumber feature mode."
   (use-package feature-mode
+    :defer t
     :mode (("\\.feature\\'" . feature-mode)))
   )
 
 (defun of-eclim/init-groovy-mode ()
   "Initializes Groovy mode."
   (use-package groovy-mode
+    :defer t
     :config
     ;; Adding Gradle primary file into groovy-mode
     (add-to-list 'auto-mode-alist '("build.gradle$" . groovy-mode)))

@@ -10,6 +10,7 @@
 The package is located in a custom folder locally, pointing to that location and
 linking file-types with this mode."
   (use-package po-mode+
+    :defer t
     :load-path "~/.spacemacs.d/ew/po-mode+"
     :config
     (setq

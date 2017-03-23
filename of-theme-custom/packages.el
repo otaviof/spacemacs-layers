@@ -31,7 +31,7 @@
 
 (defun of-theme-custom/init-highlight-quoted ()
   (use-package highlight-quoted
-    :ensure t
+    :defer t
     :init
     (add-hook 'prog-mode-hook 'highlight-quoted-mode))
   )
@@ -63,6 +63,7 @@
 (defun of-theme-custom/post-init-spaceline ()
   (use-package all-the-icons
     :ensure t
+    :demand
     :config
     (spaceline-define-segment projectile-root
       "Show the current projectile root."
@@ -178,17 +179,36 @@
   )
 
 (defun of-theme-custom/post-init-fill-column-indicator ()
-  (setq fci-rule-width 1)
-  (setq fci-rule-color "DarkSlateGray")
+  (use-package fill-column-indicator
+    :defer t
+    :config
+    (setq fci-rule-width 1)
+    (setq fci-rule-color "DarkSlateGray"))
   )
 
-(defun of-theme-custom/init-material-theme ())
+(defun of-theme-custom/init-material-theme ()
+  (use-package material-theme
+    :defer t
+    :disabled t)
+  )
 
-(defun of-theme-custom/init-ample-theme ())
+(defun of-theme-custom/init-ample-theme ()
+  (use-package ample-theme
+    :defer t
+    :disabled t)
+  )
 
-(defun of-theme-custom/init-hc-zenburn-theme ())
+(defun of-theme-custom/init-hc-zenburn-theme ()
+  (use-package hc-zenburn-theme
+    :defer t
+    :disabled t)
+  )
 
-(defun of-theme-custom/init-solarized-theme ())
+(defun of-theme-custom/init-solarized-theme ()
+  (use-package solarized-theme
+    :defer t
+    :disabled t)
+  )
 
 (defun of-theme-custom/init-beacon ()
   (use-package beacon
